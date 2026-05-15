@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jarbas_clone/theme.dart';
+import 'package:jarbas_clone/add_client_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -203,7 +204,7 @@ class _HomePageState extends State<HomePage> {
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
-      builder: (context) {
+      builder: (sheetContext) {
         return Container(
           decoration: const BoxDecoration(
             color: Color(0xFF221A3B), // Dark background for the sheet
@@ -245,7 +246,15 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildCircularAction(Icons.attach_money, 'Transação', const Color(0xFF00B894)), // Green
-                  _buildCircularAction(Icons.person_add_alt_1, 'Cliente', const Color(0xCCD63031)), // Pinkish/Purple
+                  _buildCircularAction(
+                    Icons.person_add_alt_1, 
+                    'Cliente', 
+                    const Color(0xCCD63031), // Pinkish/Purple
+                    onTap: () {
+                      Navigator.pop(sheetContext); // Close the bottom sheet first
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => const AddClientPage()));
+                    },
+                  ),
                   _buildCircularAction(Icons.sell, 'Produto /\nServiço', const Color(0xFFFF7675)), // Orange
                   _buildCircularAction(Icons.dashboard_customize, 'Categoria', const Color(0xFFB2BEC3)), // Brown/Grey
                 ],
@@ -277,31 +286,41 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildCircularAction(IconData icon, String label, Color color) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Container(
-          width: 50,
-          height: 50,
-          decoration: BoxDecoration(
-            color: color,
-            shape: BoxShape.circle,
-          ),
-          child: Center(
-            child: Icon(icon, color: Colors.white, size: 24),
+  Widget _buildCircularAction(IconData icon, String label, Color color, {VoidCallback? onTap}) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(25),
+        child: Padding(
+          padding: const EdgeInsets.all(4.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: color,
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: Icon(icon, color: Colors.white, size: 24),
+                ),
+              ),
+              const SizedBox(height: 8),
+              SizedBox(
+                width: 75,
+                child: Text(
+                  label,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w600),
+                ),
+              ),
+            ],
           ),
         ),
-        const SizedBox(height: 8),
-        SizedBox(
-          width: 75,
-          child: Text(
-            label,
-            textAlign: TextAlign.center,
-            style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w600),
-          ),
-        ),
-      ],
+      ),
     );
   }
 

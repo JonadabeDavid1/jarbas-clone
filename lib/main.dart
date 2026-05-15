@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:jarbas_clone/home_page.dart';
 import 'package:jarbas_clone/theme.dart';
 
@@ -15,6 +16,14 @@ class JarbasApp extends StatelessWidget {
       title: 'Jarbas Clone',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.darkTheme,
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: const [
+        Locale('pt', 'BR'),
+      ],
       home: const HomePage(),
     );
   }
