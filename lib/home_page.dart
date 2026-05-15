@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jarbas_clone/theme.dart';
 import 'package:jarbas_clone/add_client_page.dart';
+import 'package:jarbas_clone/products_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -255,7 +256,15 @@ class _HomePageState extends State<HomePage> {
                       Navigator.push(context, MaterialPageRoute(builder: (_) => const AddClientPage()));
                     },
                   ),
-                  _buildCircularAction(Icons.sell, 'Produto /\nServiço', const Color(0xFFFF7675)), // Orange
+                  _buildCircularAction(
+                    Icons.sell, 
+                    'Produto /\nServiço', 
+                    const Color(0xFFFF7675),
+                    onTap: () {
+                      Navigator.pop(sheetContext);
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => const ProductsPage()));
+                    },
+                  ),
                   _buildCircularAction(Icons.dashboard_customize, 'Categoria', const Color(0xFFB2BEC3)), // Brown/Grey
                 ],
               ),
@@ -336,7 +345,9 @@ class _HomePageState extends State<HomePage> {
           _buildDrawerItem(Icons.people_outline, 'Clientes'),
           _buildDrawerItem(Icons.list_alt, 'Pedidos'),
           _buildDrawerItem(Icons.point_of_sale_outlined, 'Controle de Caixa', isPremium: true),
-          _buildDrawerItem(Icons.local_offer_outlined, 'Produtos / Serviços'),
+          _buildDrawerItem(Icons.local_offer_outlined, 'Produtos / Serviços', onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (_) => const ProductsPage()));
+          }),
           _buildDrawerItem(Icons.calendar_month_outlined, 'Agenda'),
           _buildDrawerItem(Icons.attach_money_outlined, 'Financeiro'),
           _buildDrawerItem(Icons.receipt_long_outlined, 'Crediário'),
@@ -423,7 +434,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildDrawerItem(IconData icon, String title, {bool isPremium = false}) {
+  Widget _buildDrawerItem(IconData icon, String title, {bool isPremium = false, VoidCallback? onTap}) {
     return ListTile(
       leading: Icon(icon, color: Colors.white, size: 24),
       title: Text(
@@ -443,9 +454,7 @@ class _HomePageState extends State<HomePage> {
               ),
             )
           : null,
-      onTap: () {
-        // Handle navigation here
-      },
+      onTap: onTap,
     );
   }
 }
